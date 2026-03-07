@@ -1,23 +1,41 @@
 const express = require('express');
 const app = express();
+const { adminauth,userAuth } = require('../middlewares/auth');
 
 // This will only handle GET call to /user
-app.get("/user",(req,res) => {
-    res.send({firstName :"Sarthak", lastName: "Bahuguna"})
-})
+// app.use("/user",(req,res,next)=>{
+//     console.log("Handling the router user!!");
+//     res.send("Response!!");
+//     next();
+// },(req,res)=>{
+//     console.log("Handling the router user 2!!");
+//     res.send("Response 2!!");
+// })
 
-app.post("/user",async (req,res)=>{
-    console.log(req.body)
-    res.send("Save data to the database!");
-});
+// app.get("/user",(req,res,next)=>{
+//     // these act as a middleware
+//     console.log("handling the route user 1");
+//     next();
+// })
 
-app.delete("/user",(req,res)=>{
-    res.send("Deleted successfully!")
-})
+// app.get("/user",(req,res,next)=>{
+//     console.log("handling the route user 2");
+//     res.send("user 2!!")
+// })
+    app.use("/admin",adminauth); 
 
-app.use("/test",(req,res)=>{
-    res.send("Hello from the server!");
-}) 
+    app.get("/user",userAuth,(req,res)=>{
+        res.send("user data sent")
+    })
+    app.get("/admin/getAllData",(req,res)=>{
+        // check if the request is authenticated-->this will be needed again and again
+        res.send("All Data sent");
+    })
+
+    app.get("/admin/deleteUser",(req,res)=>{
+        res.send("Delete a user");
+    })
+
 
 app.listen(7777,()=>{
     console.log("Server is listening on port 7777");
