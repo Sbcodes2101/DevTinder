@@ -4,15 +4,18 @@ const mongoose = require("mongoose");
 const connectDB = require("./config/database")
 const User = require("./models/user")
 
+app.use(express.json());
 app.post("/signup",async (req,res) => {
-    const user = new User ({
-        firstName : "Sarthak",
-        lastName : "Bahuguna",
-        emailId: "sarthakbahuguna2101@gmail.com",
-        password: "sar2345"
-    })
+    console.log(req.body);
+    const user = new User(req.body); 
+    // const user = new User ({
+    //     firstName : "Sarthak",
+    //     lastName : "Bahuguna",
+    //     emailId: "sarthakbahuguna2101@gmail.com",
+    //     password: "sar2345"
+    // })
 
-    // Creating a new instance of the User model
+    // // Creating a new instance of the User model
     try{
     await user.save();
     res.send("User added successfully")
