@@ -5,9 +5,11 @@ const userAuth = (async(req,res,next) => {
     // Read the token fron the req cookies
     try{
     const {token} = req.cookies;
-
+    if(!token){
+        return res.status(401).send("Please Login!");
+    }
     const decodeObj = await jwt.verify(token,"devTINDER@123" )
-    const {_id} = decodeObj;
+    const {_id} = decodeObj; 
 
     const user = await User.findById(_id);
     // Find the user
@@ -19,7 +21,7 @@ const userAuth = (async(req,res,next) => {
     }
 
     catch(err){
-        res.status(400).send("ERROR :", +err.message)
+        res.status(400).send("ERROR :"+err.message)
     }
 });
 

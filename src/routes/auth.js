@@ -9,7 +9,7 @@ authRouter.post("/signup",async (req,res) => {
   // validation of data
   validateSignUpData(req);
   // Encrypt the password
-  const {firstName,lastName,emailId,password} = req.body;
+  const {firstName,lastName,emailId,password,age,gender} = req.body;
 
   const passwordHash = await bcrypt.hash(password,10)
   console.log(passwordHash)
@@ -19,9 +19,20 @@ authRouter.post("/signup",async (req,res) => {
       lastName,
       emailId,
       password: passwordHash,
+      age: age,
+      gender: gender
     }); 
     
-    await user.save();
+    const savedUser = await user.save();
+    const token = await user.getJWT()
+      // Add the token to cookie and send the response back to the user
+      res.cookie("token", token,{
+        expires:new Date(Date.now()+8*3600000),
+      });
+
+      res.json({message: "User Added successfully",data: savedUser});
+      res.send(user);
+
     res.send("User added successfully")
     }
     
@@ -49,7 +60,7 @@ authRouter.post("/Login", async(req,res) => {
       // Add the token to cookie and send the response back to the user
       res.cookie("token", token);
 
-      res.send("Login successful!");
+      res.send(user);
     }
 
     else{
