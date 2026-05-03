@@ -1,12 +1,11 @@
 const express = require('express');
 const app = express();
 const connectDB = require("./config/database")
-const initializeSocket = require("./utils/socket")
 
 const cookieParser = require("cookie-parser");
 const {userAuth} = require("./middlewares/auth")
 const cors = require("cors")
-const http = require("http")
+
 
   app.use(cors({
     origin: "http://localhost:5173",
@@ -18,10 +17,13 @@ const http = require("http")
 app.use(express.json());
 app.use(cookieParser());
 
+const http = require("http");
+
 const server = http.createServer(app);
+const socket = require ("socket.io");
+const initializeSocket = require("./utils/socket");
 initializeSocket(server);
 
-const socket = require("socket.io");
 
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
