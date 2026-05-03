@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
 const connectDB = require("./config/database")
+const initializeSocket = require("./utils/socket")
 
 const cookieParser = require("cookie-parser");
 const {userAuth} = require("./middlewares/auth")
 const cors = require("cors")
+const http = require("http")
 
   app.use(cors({
     origin: "http://localhost:5173",
@@ -16,6 +18,10 @@ const cors = require("cors")
 app.use(express.json());
 app.use(cookieParser());
 
+const server = http.createServer(app);
+initializeSocket(server);
+
+const socket = require("socket.io");
 
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
@@ -43,7 +49,7 @@ connectDB()
   .then(() => {
     console.log("Database connection established...");
 
-    app.listen(7777,()=>{
+    server.listen(7777,()=>{
     console.log("Server is listening on port 7777");
 })
   })
