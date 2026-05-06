@@ -28,7 +28,6 @@ userRouter.get("/user/requests/received",userAuth, async(req,res)=>{
 userRouter.get("/user/connections", userAuth, async (req,res) => {
     try{
     const loggedInUser = req.user;
-    
     const connectionRequests = await ConnectionRequest.find({
         $or:[{
             toUserId:loggedInUser,status:"accepted"
@@ -51,11 +50,8 @@ userRouter.get("/user/connections", userAuth, async (req,res) => {
         return row.fromUserId
     }
     );
-
-
     res.json({data});
     }
-
     catch(err){
         res.status(400).send({message:err.message});
     }
