@@ -9,12 +9,23 @@ const initializeSocket = (server) =>{
 
   io.on("connection",(socket)=>{
     // Handle Events
-    socket.on("joinchat",()=>{
-
+    socket.on("joinChat",({userId,targetUserId})=>{
+      const roomId = [userId,targetUserId].sort().join("_");
+      console.log("Joining Room: "+ roomId);
+      socket.join(roomId);
     });
 
-    socket.on("sendmessage",()=>{
-      
+    socket.on("sendmessage",({
+      firstName, userId, targetUserId,text:newMessage
+    })=>{
+      const roomId = [userId,targetUserId].sort().join("_");
+    
+      io.to(roomId).emit("messageReceived",{
+        firstName,
+        text:newMessage,
+        senderId:userId
+      })
+      console.log();
     });
   })
 }
