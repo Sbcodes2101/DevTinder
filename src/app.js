@@ -17,10 +17,8 @@ const cors = require("cors")
 app.use(express.json());
 app.use(cookieParser());
 
-const http = require("http");
-
+const http = require('http')
 const server = http.createServer(app);
-const socket = require ("socket.io");
 const initializeSocket = require("./utils/socket");
 initializeSocket(server);
 
