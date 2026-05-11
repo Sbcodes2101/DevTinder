@@ -5,7 +5,7 @@ const connectDB = require("./config/database")
 const cookieParser = require("cookie-parser");
 const {userAuth} = require("./middlewares/auth")
 const cors = require("cors")
-
+const { chatRouter } = require('./routes/chat');
 
   app.use(cors({
     origin: "http://localhost:5173",
@@ -33,6 +33,8 @@ app.use("/",authRouter)
 app.use("/",profileRouter)
 app.use("/",requestRouter)
 app.use("/",userRouter)
+app.use('/', chatRouter);
+
 app.post("/sendConnectionRequest",userAuth, async(req,res) => {
   try{const user = req.user
   console.log("Sending a connection request");
