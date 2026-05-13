@@ -3,6 +3,7 @@ const User = require("../models/user")
 
 const userAuth = async(req,res,next) => {
     // Read the token fron the req cookies
+    
     try{
         const {token} = req.cookies;
         if(!token){
@@ -15,7 +16,7 @@ const userAuth = async(req,res,next) => {
         if(!user){
             throw new Error("User not found");
         }
-        
+
         req.user = user
         next();
     }

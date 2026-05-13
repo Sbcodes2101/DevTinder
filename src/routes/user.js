@@ -74,6 +74,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
                 { fromUserId: loggedInUser._id },
                 { toUserId: loggedInUser._id }
             ]
+
         }).select("fromUserId toUserId");
 
         const hideUserFromFeed = new Set();
